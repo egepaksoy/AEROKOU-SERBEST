@@ -80,30 +80,6 @@ class GimbalHandler:
                 print("Hedef silme tusuna basildi")
                 deleted = False
 
-                #! Burası otomatik hedef silme icin
-                #self.request_data()
-
-                #tcp_data = server.get_data()
-                #while tcp_data ==  None:
-                    #tcp_data = server.get_data()
-                    #time.sleep(0.1)
-
-                #target_loc = calc_loc.calc_location_geopy(vehicle.get_pos(drone_id=DRONE_ID), vehicle.get_yaw(drone_id=DRONE_ID), tcp_data=tcp_data)
-
-                #for drone_id in targets:
-                    #if calc_loc.get_dist(targets[drone_id]["loc"], target_loc) <= 2:
-                        #yes_no = input(f"Hedef {targets[drone_id]['cls']} silincek emin misiniz?\ny/n")
-
-                        #if yes_no == "y":
-                            #print(f"Hedef {targets[drone_id]['cls']} silindi")
-                            #targets.pop(drone_id)
-                        #else:
-                            #print("Hedef silme iptal edildi")
-
-                        #deleted = True
-                        #break
-                #! Bitti
-
                 if not deleted:
                     target_name = input("Silinecek Hedef adini giriniz: ")
                     for drone_id in targets:

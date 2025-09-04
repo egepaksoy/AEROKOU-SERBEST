@@ -1,0 +1,104 @@
+{
+    "CONN-PORT": "com16",
+    "MODEL-PATH": "./models/kullanilcak.pt",
+    "GOZLEMCI":
+    {
+        "id": 2,
+        "UDP":
+        {
+            "ip": "0.0.0.0",
+            "port": 9999,
+            "name": "pi-4"
+        },
+        "TCP":
+        {
+            "ip": "192.168.0.120",
+            "port": 9998,
+            "name": "pi-4"
+        },
+        "alt": 4
+
+    },
+    "SALDIRILAR":
+    [
+        {
+            "id": 3
+        },
+        {
+            "id": 4
+        }
+    ],
+    "ARM-BUTTONS":
+    {
+        "ARM1": 2,
+        "ARM2": 3,
+        "ARM3": 4
+    },
+    "DRONES":
+    [
+        {
+            "id": 2,
+            "alt": 4,
+            "arm": "ARM1",
+            "miss": "gozlemci",
+            "name": "Alaca"
+        },
+        {
+            "id": 4,
+            "alt": 8,
+            "arm": "ARM2",
+            "miss": "saldiri",
+            "name": "Feniks-kisa",
+            "UDP":
+            {
+                "ip": "0.0.0.0",
+                "port": 9997,
+                "name": "pi-4"
+            },
+            "locs": [],
+            "target-loc": [40.7121239, 30.0244728],
+            "GIMBAL":
+            {
+                "channel": 14,
+                "pwms": [2000, 1500, 1000]
+            },
+            "YUK":
+            {
+                "channel": 13,
+                "acik": 1000,
+                "kapali": 1500
+            }
+        },
+        {
+            "id": 3,
+            "alt": 6,
+            "arm": "ARM3",
+            "miss": "saldiri",
+            "name": "Feniks-uzun",
+            "UDP":
+            {
+                "ip": "0.0.0.0",
+                "port": 9995,
+                "name": "pi-0"
+            },
+            "locs": [[40.7121359, 30.0246523]],
+            "target-loc": [40.7121185, 30.0246212],
+            "GIMBAL":
+            {
+                "channel": 14,
+                "pwms": [2000, 1500, 1000]
+            },
+            "YUK":
+            {
+                "channel": 13,
+                "acik": 1700,
+                "kapali": 1200
+            }
+        }
+
+    ],
+    "ARDUINO":
+    {
+        "port": "com5"
+    }
+}
