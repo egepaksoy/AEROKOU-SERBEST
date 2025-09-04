@@ -36,6 +36,10 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
         detected_obj_lock = threading.Lock()
 
         ALT = config["alt"]
+        fov = config["FOV"]
+        orta_orani = config["ORTA-ORAN"]
+        gimbal_channel = config["GIMBAL"]["channel"]
+        gimbal_angles = config["GIMBAL"]["pwms"]
 
         #? Drone'dan goruntu isleme
         saldiri_camera_handler = image_processing_handler.Handler(stop_event=stop_event)
@@ -43,8 +47,8 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
         saldiri_camera_handler.show_hide_crosshair(False)
         saldiri_camera_handler.show_image(f"{target_cls} algilama ekrani")
         saldiri_camera_handler.set_ters(False)
-        #TODO: configden al orani
-        saldiri_camera_handler.show_hide_box(show=True, oran=0.3)
+        
+        saldiri_camera_handler.show_hide_box(show=True, oran=config["ORTA-ORAN"])
 
         threading.Thread(target=saldiri_camera_handler.udp_camera_new, args=(config["UDP"]["port"], detected_obj, detected_obj_lock), daemon=True).start()
 
@@ -104,7 +108,7 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
             #? Hedefi ortalama
             if obj != None:
                 print(f"{DRONE_ID}>> {obj} algilandi hedef ortalaniyor")
-                centered = go_to_obj(vehicle, DRONE_ID, config, detected_obj, detected_obj_lock, stop_event)
+                centered = go_to_obj(vehicle=vehicle, DRONE_ID=DRONE_ID, orta_orani=orta_orani, gimbal_channel=gimbal_channel, gimbal_angles=gimbal_angles, fov=fov, detected_obj=detected_obj, detected_obj_lock=detected_obj_lock, stop_event=stop_event)
 
                 if centered:
                     print(f"{DRONE_ID}>> Yuk birakiliyor")

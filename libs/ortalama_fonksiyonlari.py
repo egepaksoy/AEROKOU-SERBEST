@@ -619,7 +619,7 @@ def adjust_y(orta_orani, y_fov, gimbal_channel, vehicle: Vehicle, DRONE_ID: int,
     return y_centered
 
 
-def go_to_obj(vehicle: Vehicle, DRONE_ID, config: dict, detected_obj: dict, detected_obj_lock: threading.Lock, stop_event: threading.Event):
+def go_to_obj(vehicle: Vehicle, DRONE_ID, orta_orani: float, gimbal_channel: int, gimbal_angles: list, fov: list, detected_obj: dict, detected_obj_lock: threading.Lock, stop_event: threading.Event):
     '''
     Eğer nesnenin uzerine ortalanırsa True dondurur, Nesne kayboldu ise False dondurur
     '''
@@ -635,13 +635,7 @@ def go_to_obj(vehicle: Vehicle, DRONE_ID, config: dict, detected_obj: dict, dete
 
     vehicle.set_mode(mode="GUIDED", drone_id=DRONE_ID)
 
-    orta_orani = config["CAMERA"]["oran"]
-    gimbal_channel = config["GIMBAL"]["channel"]
-    gimbal_angles = config["GIMBAL"]["pwms"]
-    x_fov, y_fov = None, None
-    if "fov" in config["UDP"]:
-        if len(config["UDP"]["fov"]) == 2:
-            x_fov, y_fov = config["UDP"]["fov"]
+    x_fov, y_fov = fov
     
     if x_fov == None or y_fov == None:
         print("Config dosyasina fov degerleri giriniz")

@@ -55,8 +55,6 @@
                 "port": 9997,
                 "name": "pi-4"
             },
-            "locs": [],
-            "target-loc": [40.7121239, 30.0244728],
             "GIMBAL":
             {
                 "channel": 14,
@@ -67,7 +65,9 @@
                 "channel": 13,
                 "acik": 1000,
                 "kapali": 1500
-            }
+            },
+            "ORTA-ORAN": 0.3,
+            "FOV": []
         },
         {
             "id": 3,
@@ -81,8 +81,6 @@
                 "port": 9995,
                 "name": "pi-0"
             },
-            "locs": [[40.7121359, 30.0246523]],
-            "target-loc": [40.7121185, 30.0246212],
             "GIMBAL":
             {
                 "channel": 14,
@@ -93,7 +91,9 @@
                 "channel": 13,
                 "acik": 1700,
                 "kapali": 1200
-            }
+            },
+            "ORTA-ORAN": 0.3,
+            "FOV": []
         }
 
     ],
