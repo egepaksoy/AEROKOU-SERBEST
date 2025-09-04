@@ -7,9 +7,6 @@ sys.path.append("./libs/")
 from pymavlink_custom.pymavlink_custom import Vehicle
 import libs.image_processing_handler as image_processing_handler
 
-#! kirmzii araba goruntusu calismiyor
-#TODO: drone kendini cevirsin arabaya sonra servoyu yere cevirip dumduz gitsin (belki mesafe hesaplayabilirim)
-
 def failsafe(vehicle):
     def failsafe_drone_id(vehicle, drone_id):
         print(f"{drone_id}>> Failsafe alıyor")
