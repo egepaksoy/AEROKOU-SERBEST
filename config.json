@@ -1,5 +1,5 @@
 {
-    "CONN-PORT": "com16",
+    "CONN-PORT": "udp:172.22.160.1:14550",
     "MODEL-PATH": "./models/kullanilcak.pt",
     "GOZLEMCI":
     {
@@ -58,7 +58,7 @@
             "GIMBAL":
             {
                 "channel": 14,
-                "pwms": [2000, 1500, 1000]
+                "pwms": [2000, 1700, 1500, 1200, 1000]
             },
             "YUK":
             {
@@ -84,7 +84,7 @@
             "GIMBAL":
             {
                 "channel": 14,
-                "pwms": [2000, 1500, 1000]
+                "pwms": [2000, 1700, 1500, 1200, 1000]
             },
             "YUK":
             {

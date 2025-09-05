@@ -1,0 +1,104 @@
+{
+    "CONN-PORT": "com4",
+    "MODEL-PATH": "./models/ates_post.pt",
+    "GOZLEMCI":
+    {
+        "id": 1,
+        "UDP":
+        {
+            "ip": "0.0.0.0",
+            "port": 9999,
+            "name": "pi-4"
+        },
+        "TCP":
+        {
+            "ip": "192.168.0.120",
+            "port": 9998,
+            "name": "pi-4"
+        },
+        "alt": 4
+
+    },
+    "SALDIRILAR":
+    [
+        {
+            "id": 4
+        },
+        {
+            "id": 3
+        }
+    ],
+    "ARM-BUTTONS":
+    {
+        "ARM1": 1,
+        "ARM2": 2,
+        "ARM3": 3
+    },
+    "DRONES":
+    [
+        {
+            "id": 1,
+            "alt": 4,
+            "arm": "ARM1",
+            "miss": "gozlemci",
+            "name": "Alaca"
+        },
+        {
+            "id": 4,
+            "alt": 8,
+            "arm": "ARM2",
+            "miss": "saldiri",
+            "name": "Feniks-kisa",
+            "UDP":
+            {
+                "ip": "0.0.0.0",
+                "port": 9995,
+                "name": "pi-4"
+            },
+            "GIMBAL":
+            {
+                "channel": 14,
+                "pwms": [2000, 1700, 1500, 1200, 1000]
+            },
+            "YUK":
+            {
+                "channel": 13,
+                "acik": 1000,
+                "kapali": 1500
+            },
+            "ORTA-ORAN": 0.3,
+            "FOV": [62.2, 48.8]
+        },
+        {
+            "id": 3,
+            "alt": 6,
+            "arm": "ARM3",
+            "miss": "saldiri",
+            "name": "Feniks-uzun",
+            "UDP":
+            {
+                "ip": "0.0.0.0",
+                "port": 9997,
+                "name": "pi-0"
+            },
+            "GIMBAL":
+            {
+                "channel": 14,
+                "pwms": [2000, 1700, 1500, 1200, 1000]
+            },
+            "YUK":
+            {
+                "channel": 13,
+                "acik": 1700,
+                "kapali": 1200
+            },
+            "ORTA-ORAN": 0.3,
+            "FOV": [62.2, 48.8]
+        }
+
+    ],
+    "ARDUINO":
+    {
+        "port": "com5"
+    }
+}

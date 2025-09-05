@@ -11,6 +11,7 @@ import libs.image_processing_handler as image_processing_handler
 import libs.gimbal_controller as gimbal_controller
 import libs.yki_handler as yki_handler
 
+#! fire-poster
 def failsafe(vehicle):
     def failsafe_drone_id(vehicle, drone_id):
         print(f"{drone_id}>> Failsafe alıyor")
@@ -45,18 +46,21 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
         saldiri_camera_handler = image_processing_handler.Handler(stop_event=stop_event)
         saldiri_camera_handler.start_proccessing(model_path)
         saldiri_camera_handler.show_hide_crosshair(False)
-        saldiri_camera_handler.show_image(f"{target_cls} algilama ekrani")
+        saldiri_camera_handler.show_image(f"Drone {DRONE_ID} kamera goruntusu")
         saldiri_camera_handler.set_ters(False)
         
         saldiri_camera_handler.show_hide_box(show=True, oran=config["ORTA-ORAN"])
 
         threading.Thread(target=saldiri_camera_handler.udp_camera_new, args=(config["UDP"]["port"], detected_obj, detected_obj_lock), daemon=True).start()
+        #threading.Thread(target=saldiri_camera_handler.local_camera, args=(0, detected_obj, detected_obj_lock), daemon=True).start()
 
         while not saldiri_camera_handler.broadcast_started:
             time.sleep(0.5)
 
         #? Ucus hazirligi
-        vehicle.set_servo(channel=config["GIMBAL"]["channel"], pwm=config["GIMBAL"]["pwms"][0], drone_id=DRONE_ID)
+        servo_pwm = 0
+        vehicle.set_servo(channel=config["GIMBAL"]["channel"], pwm=config["GIMBAL"]["pwms"][servo_pwm], drone_id=DRONE_ID)
+        current_servo_pwm = config["GIMBAL"]["pwms"][servo_pwm]
         vehicle.set_mode(mode="GUIDED", drone_id=DRONE_ID)
         vehicle.arm_disarm(arm=True, drone_id=DRONE_ID)
         vehicle.multiple_takeoff(alt=ALT, drone_id=DRONE_ID)
@@ -86,7 +90,6 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
                 break
         
         #? Etrafinda donerek tarama
-        vehicle.turn_around(default_speed=15, drone_id=DRONE_ID)
         centered = False
         start_time = time.time()
         while not stop_event.is_set() and saldiri_camera_handler.running:
@@ -107,34 +110,51 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
 
             #? Hedefi ortalama
             if obj != None:
-                print(f"{DRONE_ID}>> {obj} algilandi hedef ortalaniyor")
-                centered = go_to_obj(vehicle=vehicle, DRONE_ID=DRONE_ID, orta_orani=orta_orani, gimbal_channel=gimbal_channel, gimbal_angles=gimbal_angles, fov=fov, detected_obj=detected_obj, detected_obj_lock=detected_obj_lock, stop_event=stop_event)
+                if obj == target_cls:
+                    print(f"{DRONE_ID}>> {obj} algilandi hedef ortalaniyor")
+                    centered, current_servo_pwm = go_to_obj(vehicle=vehicle, DRONE_ID=DRONE_ID, orta_orani=orta_orani, gimbal_channel=gimbal_channel, gimbal_angles=gimbal_angles, servo_pwm=current_servo_pwm, fov=fov, target_cls=target_cls, detected_obj=detected_obj, detected_obj_lock=detected_obj_lock, stop_event=stop_event)
 
-                if centered:
-                    print(f"{DRONE_ID}>> Yuk birakiliyor")
-                    vehicle.set_servo(channel=config["YUK"]["channel"], pwm=config["YUK"]["acik"], drone_id=DRONE_ID)
-                    
-                    start_time = time.time()
-                    while not stop_event.is_set() and time.time() - start_time < 2:
-                        time.sleep(0.05)
+                    if centered:
+                        print(f"{DRONE_ID}>> Yuk birakiliyor")
+                        vehicle.set_servo(channel=config["YUK"]["channel"], pwm=config["YUK"]["acik"], drone_id=DRONE_ID)
+                        
+                        start_time = time.time()
+                        while not stop_event.is_set() and time.time() - start_time < 2:
+                            time.sleep(0.05)
 
-                    vehicle.set_servo(channel=config["YUK"]["channel"], pwm=config["YUK"]["kapali"], drone_id=DRONE_ID)
+                        vehicle.set_servo(channel=config["YUK"]["channel"], pwm=config["YUK"]["kapali"], drone_id=DRONE_ID)
 
-                    start_time = time.time()
-                    while not stop_event.is_set() and time.time() - start_time < 2:
-                        time.sleep(0.05)
-                    
-                    print(f"{DRONE_ID}>> Yuk birakildi kalkis konumuna donuyor")
-                    break
+                        start_time = time.time()
+                        while not stop_event.is_set() and time.time() - start_time < 2:
+                            time.sleep(0.05)
+                        
+                        print(f"{DRONE_ID}>> Yuk birakildi kalkis konumuna donuyor")
+                        break
             
-                #? Taramaya devam etme
+                    #? Taramaya devam etme
+                    else:
+                        print(f"{DRONE_ID}>> Hedef {target_cls} ortalanamadi tekrar taraniyor")
+                        if servo_pwm == 0:
+                            servo_pwm += 1
+                        vehicle.set_servo(channel=config["GIMBAL"]["channel"], pwm=config["GIMBAL"]["pwms"][servo_pwm], drone_id=DRONE_ID)
+                        vehicle.turn_around(default_speed=15, drone_id=DRONE_ID)
+            
+            elif (obj == None or obj != target_cls) and vehicle.yaw_speed(drone_id=DRONE_ID) < 0.2:
+                if servo_pwm + 1 < len(config["GIMBAL"]["pwms"]):
+                    servo_pwm += 1
                 else:
-                    print(f"{DRONE_ID}>> Hedef ortalanamadi tekrar taraniyor")
-                    vehicle.turn_around(default_speed=15, drone_id=DRONE_ID)
+                    print(f"{DRONE_ID}>> Hedef bulunamadi kalkisa donuyor")
+                    break
+                vehicle.set_servo(channel=config["GIMBAL"]["channel"], pwm=config["GIMBAL"]["pwms"][servo_pwm], drone_id=DRONE_ID)
+                vehicle.turn_around(default_speed=15, drone_id=DRONE_ID)
 
+                while vehicle.yaw_speed(drone_id=DRONE_ID) <= 0.2:
+                    time.sleep(0.05)
+            
             time.sleep(0.05)
 
         go_home(stop_event=stop_event, vehicle=vehicle, home_pos=home_pos, DRONE_ID=DRONE_ID)
+        print(f"{DRONE_ID}>> Gorevini tamamladi")
         
     
     miss_thrds = []
@@ -178,7 +198,10 @@ def go_home(stop_event, vehicle: Vehicle, home_pos, DRONE_ID):
 
 
 #? Gerekliler
-config = json.load(open("./config.json"))
+conf_file = "./config.json"
+if len(sys.argv) == 2:
+    conf_file = "./config-test.json"
+config = json.load(open(conf_file))
 stop_event = threading.Event()
 
 #? YKI
@@ -192,7 +215,7 @@ gozlemci_camera_handler.show_image("Gozlemci ekrani")
 gozlemci_camera_handler.set_ters(True)
 gimbal_handler = gimbal_controller.GimbalHandler(server=gimbal_server, stop_event=stop_event)
 
-threading.Thread(target=gozlemci_camera_handler.udp_camera_new, args=(config["GOZLEMCI"]["UDP"]["port"]), daemon=True).start()
+threading.Thread(target=gozlemci_camera_handler.udp_camera_new, args=(config["GOZLEMCI"]["UDP"]["port"], ), daemon=True).start()
 threading.Thread(target=gimbal_handler.joystick_controller, args=(yki_monitor, ), daemon=True).start()
 
 #? Uçuş hazırlıkları
@@ -275,8 +298,3 @@ finally:
     if not stop_event.is_set():
         stop_event.set()
     vehicle.vehicle.close()
-
-
-
-
-
