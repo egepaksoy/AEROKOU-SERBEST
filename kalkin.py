@@ -30,7 +30,7 @@ stop_event = threading.Event()
 #? Uçuş hazırlıkları
 ALT = 5
 
-vehicle = Vehicle("com9")
+vehicle = Vehicle("com16")
 
 try:
     # Drone'dan goruntu isleme

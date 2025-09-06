@@ -63,15 +63,15 @@
             "YUK":
             {
                 "channel": 13,
-                "acik": 1000,
-                "kapali": 1500
+                "acik": 1800,
+                "kapali": 1300
             },
             "ORTA-ORAN": 0.3,
             "FOV": [62.2, 48.8]
         },
         {
             "id": 3,
-            "alt": 8,
+            "alt": 9,
             "arm": "ARM3",
             "miss": "saldiri",
             "name": "Feniks-uzun",
