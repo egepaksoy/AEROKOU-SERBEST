@@ -164,12 +164,12 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
     miss_thrds = []
     with target_locker:
         for drone_id in targets:
-            target_loc = targets[drone_id]["loc"]
-            target_cls = targets[drone_id]["cls"]
             drone_conf = None
 
             for saldiri_iha in config["DRONES"]:
                 if saldiri_iha["id"] == drone_id:
+                    target_loc = targets[drone_id]["loc"]
+                    target_cls = targets[drone_id]["cls"]
                     drone_conf = saldiri_iha
                     break
             
