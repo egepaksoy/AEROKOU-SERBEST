@@ -69,8 +69,8 @@ try:
                 while time.time() - start_time < 2:
                     time.sleep(0.05)
                 vehicle.set_servo(channel=dron_conf["YUK"]["channel"], pwm=dron_conf["YUK"]["kapali"], drone_id=drone_id)
-            
-    print("Kontrol tamamlandı")
+
+    input("Kontrol tamamlandı kapatmak için ENTER")
 
 except KeyboardInterrupt:
     print("Exiting...")
