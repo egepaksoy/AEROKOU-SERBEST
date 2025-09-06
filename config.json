@@ -1,6 +1,6 @@
 {
-    "CONN-PORT": "udp:172.22.160.1:14550",
-    "MODEL-PATH": "./models/kullanilcak.pt",
+    "CONN-PORT": "com16",
+    "MODEL-PATH": "./models/araba_poster.pt",
     "GOZLEMCI":
     {
         "id": 2,
@@ -16,23 +16,23 @@
             "port": 9998,
             "name": "pi-4"
         },
-        "alt": 4
+        "alt": 5
 
     },
     "SALDIRILAR":
     [
         {
-            "id": 3
+            "id": 4
         },
         {
-            "id": 4
+            "id": 3
         }
     ],
     "ARM-BUTTONS":
     {
         "ARM1": 2,
-        "ARM2": 3,
-        "ARM3": 4
+        "ARM2": 4,
+        "ARM3": 3
     },
     "DRONES":
     [
@@ -45,36 +45,10 @@
         },
         {
             "id": 4,
-            "alt": 8,
+            "alt": 6,
             "arm": "ARM2",
             "miss": "saldiri",
             "name": "Feniks-kisa",
-            "UDP":
-            {
-                "ip": "0.0.0.0",
-                "port": 9997,
-                "name": "pi-4"
-            },
-            "GIMBAL":
-            {
-                "channel": 14,
-                "pwms": [2000, 1700, 1500, 1200, 1000]
-            },
-            "YUK":
-            {
-                "channel": 13,
-                "acik": 1000,
-                "kapali": 1500
-            },
-            "ORTA-ORAN": 0.3,
-            "FOV": []
-        },
-        {
-            "id": 3,
-            "alt": 6,
-            "arm": "ARM3",
-            "miss": "saldiri",
-            "name": "Feniks-uzun",
             "UDP":
             {
                 "ip": "0.0.0.0",
@@ -89,11 +63,37 @@
             "YUK":
             {
                 "channel": 13,
+                "acik": 1000,
+                "kapali": 1500
+            },
+            "ORTA-ORAN": 0.3,
+            "FOV": [62.2, 48.8]
+        },
+        {
+            "id": 3,
+            "alt": 8,
+            "arm": "ARM3",
+            "miss": "saldiri",
+            "name": "Feniks-uzun",
+            "UDP":
+            {
+                "ip": "0.0.0.0",
+                "port": 9997,
+                "name": "pi-3"
+            },
+            "GIMBAL":
+            {
+                "channel": 14,
+                "pwms": [2000, 1700, 1500, 1200, 1000]
+            },
+            "YUK":
+            {
+                "channel": 13,
                 "acik": 1700,
                 "kapali": 1200
             },
             "ORTA-ORAN": 0.3,
-            "FOV": []
+            "FOV": [62.2, 48.8]
         }
 
     ],

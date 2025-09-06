@@ -316,7 +316,7 @@ def go_to_obj(vehicle: Vehicle, DRONE_ID, orta_orani: float, gimbal_channel: int
 
 
         # Nesne ortalanmis ya da gerisinde kalmis ise
-        if (y_dist == 0 or y_dist < 0) and (current_servo_pwm >= gimbal_angles[0] - 300 and current_servo_pwm <= gimbal_angles[0]):
+        if (y_dist == 0 or y_dist < 0) and (current_servo_pwm >= gimbal_angles[0] - 200 and current_servo_pwm <= gimbal_angles[0]):
             # Dronu ilerlemesini durdurma
             vehicle.move_drone_body((0,0,0), drone_id=DRONE_ID)
 
