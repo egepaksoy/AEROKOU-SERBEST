@@ -457,7 +457,7 @@ class Vehicle():
 
             if arm == 0 or arm == 1:
                 if force_arm:
-                    self.vehicle.mav.command_long_send(drone_id, self.vehicle.target_component, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, arm, 0, 21196, 0, 0, 0, 0)
+                    self.vehicle.mav.command_long_send(drone_id, self.vehicle.target_component, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, arm, 21196, 0, 0, 0, 0, 0)
                 else:
                     self.vehicle.mav.command_long_send(drone_id, self.vehicle.target_component, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, arm, 0, 0, 0, 0, 0, 0)
                 if arm == 0:
