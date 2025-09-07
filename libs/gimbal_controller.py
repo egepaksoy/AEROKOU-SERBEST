@@ -55,16 +55,21 @@ class GimbalHandler:
                 target_loc = calc_loc.calc_location_geopy(vehicle.get_pos(drone_id=DRONE_ID), vehicle.get_yaw(drone_id=DRONE_ID), tcp_data=tcp_data)
  
                 min_dist_drone_id = None
+                min_drone_dist = None
                 for drone_id in vehicle.drone_ids:
-                    if drone_id != DRONE_ID:
+                    if drone_id != DRONE_ID and drone_id not in targets:
                         min_dist_drone_id = drone_id
                         min_drone_dist = calc_loc.get_dist(vehicle.get_pos(drone_id=drone_id), target_loc)
                         break
+
+                if min_drone_dist == None or min_dist_drone_id == None:
+                    raise ValueError("En yakin drone bilgisi alinamadi")
+
                 for drone_id in vehicle.drone_ids:
                     if drone_id != DRONE_ID and drone_id not in targets:
-                        #if calc_loc.get_dist(vehicle.get_pos(drone_id=drone_id), target_loc) < min_drone_dist:
-                            #min_dist_drone_id = drone_id
-                        min_dist_drone_id = drone_id
+                        if calc_loc.get_dist(vehicle.get_pos(drone_id=drone_id), target_loc) < min_drone_dist:
+                            min_dist_drone_id = drone_id
+                            min_drone_dist = calc_loc.get_dist(vehicle.get_pos(drone_id=drone_id), target_loc)
 
                 new_target = {"cls": target_name, "loc": target_loc}
                 with target_locker:

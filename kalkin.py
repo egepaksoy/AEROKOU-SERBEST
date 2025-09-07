@@ -24,31 +24,33 @@ def failsafe(vehicle):
 
     print(f"{vehicle.drone_ids} id'li Drone(lar) Failsafe aldi")
 
+def fail(vehicle):
+    while not stop_event.is_set():
+        print(vehicle.error_messages())
+        time.sleep(0.05)
+
 #? Gerekliler
 stop_event = threading.Event()
 
-#? Uçuş hazırlıkları
-ALT = 5
-
-vehicle = Vehicle("com16")
+vehicle = Vehicle("COM16")
+DRONE_ID = 4
 
 try:
     # Drone'dan goruntu isleme
-    input("Ucus baslatilmasi bekleniyor ENTER")
+    threading.Thread(target=fail, args=(vehicle, ), daemon=True).start()
+    input(f"{DRONE_ID} arm edilcek ENTER")
 
     # Ucus hazirligi
-    vehicle.set_mode(mode="GUIDED")
+    vehicle.set_mode(mode="GUIDED", drone_id=DRONE_ID)
     time.sleep(0.5)
-    vehicle.arm_disarm(arm=True)
-    time.sleep(0.5)
-    vehicle.takeoff(alt=ALT)
-    
-    home_pos = vehicle.get_pos()
-    print(f"takeoff yaptı")
-
+    vehicle.arm_disarm(arm=True, drone_id=DRONE_ID)
     time.sleep(3)
+    vehicle.arm_disarm(arm=False, drone_id=DRONE_ID)
 
-    vehicle.set_mode(mode="LAND")
+    vehicle.set_mode(mode="POSHOLD", drone_id=DRONE_ID)
+
+    stop_event.set()
+
     print("Görev tamamlandi")
         
 except KeyboardInterrupt:

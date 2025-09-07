@@ -17,13 +17,23 @@ if len(sys.argv) == 2:
 else:
     raise ValueError("Kullanım: python gimbal_pwm_tester.py <baglanti_adresi>")
 
-vehicle = Vehicle(conn_port)
+vehicle = Vehicle(address=conn_port, on_flight=False)
+
+angles = [2000, 1700, 1500, 1200, 1000]
+channel = 14
+
+#angles = [1800, 1300]
+drone_id = 4
+#channel = 13
+
+#angles = [1700, 1200]
+#drone_id = 3
+#channel = 13
 
 try:
-    vehicle.set_servo(channel=13, pwm=1700, drone_id=3)
-    time.sleep(2)
-    vehicle.set_servo(channel=13, pwm=1200, drone_id=3)
-    time.sleep(2)
+    for angle in angles:
+        vehicle.set_servo(channel=channel, pwm=angle, drone_id=drone_id)
+        time.sleep(2)
 
 except KeyboardInterrupt:
     print("Exiting...")

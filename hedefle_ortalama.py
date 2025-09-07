@@ -43,7 +43,7 @@ def second_miss(stop_event, vehicle: Vehicle, config, targets, target_locker):
         gimbal_channel = config["GIMBAL"]["channel"]
         gimbal_angles = config["GIMBAL"]["pwms"]
 
-        input(f"{DRONE_ID}-{target_cls}\n")
+        print(f"{DRONE_ID}-{target_cls}\n")
 
         #? Drone'dan goruntu isleme
         saldiri_camera_handler = image_processing_handler.Handler(stop_event=stop_event)
